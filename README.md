@@ -44,7 +44,7 @@ Hasil build ada di folder `dist/`.
 
 ---
 
-## Upload ke GitHub (repo: weekdayscoffee/landing-page)
+## Upload ke GitHub (repo: weekdayscoffee/weekdays-landing-page)
 
 Dari dalam folder project ini:
 
@@ -53,11 +53,11 @@ git init
 git add .
 git commit -m "Initial commit: Weekdays Coffee landing page"
 git branch -M main
-git remote add origin https://github.com/weekdayscoffee/landing-page.git
+git remote add origin https://github.com/weekdayscoffee/weekdays-landing-page.git
 git push -u origin main
 ```
 
-Jika repo `weekdayscoffee/landing-page` belum ada di GitHub, buat dulu repo
+Jika repo `weekdayscoffee/weekdays-landing-page` belum ada di GitHub, buat dulu repo
 kosong (tanpa README/gitignore bawaan GitHub) di akun/organisasi
 `weekdayscoffee`, baru jalankan perintah di atas. Git akan meminta autentikasi
 GitHub kamu (lewat browser/token) saat `git push`.
@@ -66,12 +66,12 @@ GitHub kamu (lewat browser/token) saat `git push`.
 
 **Opsi A — lewat dashboard Vercel (disarankan):**
 1. Login ke [vercel.com](https://vercel.com) dan klik **Add New → Project**.
-2. Pilih **Import Git Repository**, lalu pilih `weekdayscoffee/landing-page`.
+2. Pilih **Import Git Repository**, lalu pilih `weekdayscoffee/weekdays-landing-page`.
 3. File `vercel.json` di repo ini sudah mengunci konfigurasi build secara
    eksplisit (`npm install` → `npm run build` → output `dist`), jadi biasanya
    tidak perlu diubah apa-apa.
 4. Klik **Deploy**. Setelah selesai, Vercel akan memberi URL live (mis.
-   `landing-page-xxxx.vercel.app`), dan bisa dihubungkan ke domain
+   `weekdays-landing-page-xxxx.vercel.app`), dan bisa dihubungkan ke domain
    `weekdayscoffee.id` lewat menu **Domains** di project settings.
 
 **Jika masih muncul error `vite: command not found`:**

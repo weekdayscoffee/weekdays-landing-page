@@ -1,4 +1,15 @@
 import React, { useState, useEffect } from "react";
+import {
+  Menu,
+  X,
+  MapPin,
+  Mail,
+  Globe,
+  ShieldCheck,
+  Clock,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 
 /* ============================================================================
    WEEKDAYS COFFEE / #TemanKantor
@@ -123,36 +134,42 @@ function Nav({ page, setPage }) {
   const [open, setOpen] = useState(false);
   return (
     <header
+      className="wd-navbar"
       style={{
         position: "sticky",
         top: 0,
-        zIndex: 50,
-        background: "rgba(255,255,255,0.86)",
-        backdropFilter: "blur(10px)",
+        zIndex: 1000,
+        background: "rgba(255,255,255,0.94)",
+        backdropFilter: "blur(14px)",
+        WebkitBackdropFilter: "blur(14px)",
         borderBottom: `1px solid ${C.foam}`,
+        width: "100%",
       }}
     >
       <div
+        className="wd-container"
         style={{
-          maxWidth: 1180,
-          margin: "0 auto",
-          padding: "18px 24px",
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
+          paddingTop: 14,
+          paddingBottom: 14,
         }}
       >
         <button
-          onClick={() => setPage("home")}
+          onClick={() => {
+            setPage("home");
+            setOpen(false);
+          }}
           style={{ background: "none", border: "none", cursor: "pointer", padding: 0 }}
           aria-label="Weekdays Coffee, beranda"
         >
-          <Wordmark />
+          <Wordmark size={24} />
         </button>
 
         <nav
           className="wd-desktop-nav"
-          style={{ display: "flex", gap: 34, alignItems: "center" }}
+          style={{ display: "flex", gap: 32, alignItems: "center" }}
         >
           {PAGES.map((p) => (
             <button
@@ -197,31 +214,15 @@ function Nav({ page, setPage }) {
         <button
           className="wd-burger"
           onClick={() => setOpen(!open)}
-          aria-label="Menu"
-          style={{
-            display: "none",
-            background: "none",
-            border: "none",
-            cursor: "pointer",
-            color: C.espresso,
-            fontSize: 24,
-          }}
+          aria-label={open ? "Tutup menu" : "Buka menu"}
+          aria-expanded={open}
         >
-          {open ? "✕" : "☰"}
+          {open ? <X size={24} /> : <Menu size={24} />}
         </button>
       </div>
 
       {open && (
-        <div
-          className="wd-mobile-menu"
-          style={{
-            display: "none",
-            flexDirection: "column",
-            padding: "8px 24px 20px",
-            borderTop: `1px solid ${C.foam}`,
-            background: C.white,
-          }}
-        >
+        <div className="wd-mobile-menu">
           {PAGES.map((p) => (
             <button
               key={p.id}
@@ -229,21 +230,22 @@ function Nav({ page, setPage }) {
                 setPage(p.id);
                 setOpen(false);
               }}
-              style={{
-                background: "none",
-                border: "none",
-                textAlign: "left",
-                padding: "12px 0",
-                cursor: "pointer",
-                fontFamily: "'Inter', sans-serif",
-                fontSize: 16,
-                fontWeight: page === p.id ? 600 : 500,
-                color: page === p.id ? C.espresso : C.muted,
-              }}
+              className={`wd-mobile-link ${page === p.id ? "active" : ""}`}
             >
-              {p.label}
+              <span>{p.label}</span>
+              {page === p.id && <span className="wd-active-dot" />}
             </button>
           ))}
+          <a
+            href="https://weekdayscoffee.id"
+            onClick={(e) => {
+              e.preventDefault();
+              setOpen(false);
+            }}
+            className="wd-mobile-cta"
+          >
+            Pesan Sekarang
+          </a>
         </div>
       )}
     </header>
@@ -254,6 +256,7 @@ function Nav({ page, setPage }) {
 function Eyebrow({ children, color = C.roast }) {
   return (
     <div
+      className="wd-eyebrow"
       style={{
         display: "inline-flex",
         alignItems: "center",
@@ -273,27 +276,11 @@ function Eyebrow({ children, color = C.roast }) {
 
 function Stat({ n, label, color = C.espresso }) {
   return (
-    <div>
-      <div
-        style={{
-          fontFamily: "'Fraunces', serif",
-          fontSize: 46,
-          fontWeight: 500,
-          color,
-          lineHeight: 1,
-        }}
-      >
+    <div className="wd-stat-item">
+      <div className="wd-stat-num" style={{ color }}>
         {n}
       </div>
-      <div
-        style={{
-          fontFamily: "'Inter', sans-serif",
-          fontSize: 13,
-          color: C.muted,
-          marginTop: 8,
-          letterSpacing: "0.03em",
-        }}
-      >
+      <div className="wd-stat-label">
         {label}
       </div>
     </div>
@@ -304,155 +291,125 @@ function Stat({ n, label, color = C.espresso }) {
 function Home({ setPage }) {
   return (
     <>
-      {/* HERO: left-aligned editorial (deliberate divergence from lokale's centered hero) */}
-      <section style={{ maxWidth: 1180, margin: "0 auto", padding: "56px 24px 20px" }}>
-        <div
-          className="wd-hero"
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1.05fr 1fr",
-            gap: 44,
-            alignItems: "center",
-          }}
-        >
-          <div>
-            <Eyebrow>Coffee • Food • Collaboration</Eyebrow>
-            <h1
-              style={{
-                fontFamily: "'Fraunces', serif",
-                fontWeight: 500,
-                fontSize: "clamp(40px, 5.4vw, 68px)",
-                lineHeight: 1.02,
-                color: C.bean,
-                margin: "0 0 22px",
-              }}
-            >
-              Made better,
-              <br />
-              <span style={{ fontStyle: "italic", color: C.espresso }}>together.</span>
-            </h1>
-            <p
-              style={{
-                fontFamily: "'Inter', sans-serif",
-                fontSize: 17,
-                lineHeight: 1.65,
-                color: C.muted,
-                maxWidth: 440,
-                margin: "0 0 30px",
-              }}
-            >
-              Kopi yang tepat, menu yang bikin fokus, dan ruang hangat buat teman
-              kantor. Weekdays hadir untuk menemani setiap jeda kecilmu. Find your
-              little pause.
-            </p>
-            <div style={{ display: "flex", gap: 14, flexWrap: "wrap" }}>
-              <button
-                onClick={() => setPage("outlet")}
-                style={btnPrimary}
+      {/* HERO: editorial & clean */}
+      <section className="wd-section-pad" style={{ paddingTop: 36, paddingBottom: 24 }}>
+        <div className="wd-container">
+          <div className="wd-hero">
+            <div>
+              <Eyebrow>Coffee • Food • Collaboration</Eyebrow>
+              <h1
+                style={{
+                  fontFamily: "'Fraunces', serif",
+                  fontWeight: 500,
+                  fontSize: "clamp(32px, 5.2vw, 68px)",
+                  lineHeight: 1.05,
+                  color: C.bean,
+                  margin: "0 0 20px",
+                }}
               >
-                Temukan Outlet
-              </button>
-              <button onClick={() => setPage("event")} style={btnGhost}>
-                Event & Kolaborasi
-              </button>
+                Made better,
+                <br />
+                <span style={{ fontStyle: "italic", color: C.espresso }}>together.</span>
+              </h1>
+              <p
+                style={{
+                  ...pStyle,
+                  maxWidth: 440,
+                  margin: "0 0 28px",
+                }}
+              >
+                Kopi yang tepat, menu yang bikin fokus, dan ruang hangat buat teman
+                kantor. Weekdays hadir untuk menemani setiap jeda kecilmu. Find your
+                little pause.
+              </p>
+              <div className="wd-hero-btns">
+                <button
+                  onClick={() => setPage("outlet")}
+                  style={btnPrimary}
+                >
+                  Temukan Outlet
+                </button>
+                <button onClick={() => setPage("event")} style={btnGhost}>
+                  Event & Kolaborasi
+                </button>
+              </div>
             </div>
-          </div>
 
-          <div style={{ position: "relative" }}>
-            <Img
-              src={IMG.heroMadeTogether}
-              alt="Suasana Weekdays Coffee"
-              style={{
-                width: "100%",
-                height: 460,
-                borderRadius: 20,
-                display: "block",
-              }}
-            />
-            <div
-              style={{
-                position: "absolute",
-                bottom: 18,
-                left: 18,
-                background: "rgba(74,46,28,0.92)",
-                color: C.white,
-                padding: "12px 18px",
-                borderRadius: 12,
-                fontFamily: "'Inter', sans-serif",
-                fontSize: 13,
-                fontWeight: 600,
-                letterSpacing: "0.04em",
-              }}
-            >
-              #TemanKantor
+            <div className="wd-hero-img-wrap">
+              <Img
+                src={IMG.heroMadeTogether}
+                alt="Suasana Weekdays Coffee"
+                className="wd-hero-img"
+              />
+              <div
+                style={{
+                  position: "absolute",
+                  bottom: 16,
+                  left: 16,
+                  background: "rgba(74,46,28,0.92)",
+                  color: C.white,
+                  padding: "10px 16px",
+                  borderRadius: 12,
+                  fontFamily: "'Inter', sans-serif",
+                  fontSize: 12.5,
+                  fontWeight: 600,
+                  letterSpacing: "0.04em",
+                  boxShadow: "0 4px 12px rgba(0,0,0,0.18)",
+                }}
+              >
+                #TemanKantor
+              </div>
             </div>
           </div>
         </div>
       </section>
 
       {/* STAT STRIP */}
-      <section style={{ maxWidth: 1180, margin: "0 auto", padding: "30px 24px 10px" }}>
-        <div
-          className="wd-stats"
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            gap: 24,
-            flexWrap: "wrap",
-            borderTop: `1px solid ${C.foam}`,
-            borderBottom: `1px solid ${C.foam}`,
-            padding: "28px 0",
-          }}
-        >
-          <Stat n="2" label="Lokasi strategis" />
-          <Stat n="16.7K+" label="Teman Weekdays" />
-          <Stat n="06.00" label="Buka setiap pagi kerja" />
-          <Stat n="100%" label="Halal & homemade" />
+      <section style={{ padding: "10px 0" }}>
+        <div className="wd-container">
+          <div className="wd-stats">
+            <Stat n="2" label="Lokasi strategis" />
+            <Stat n="16.7K+" label="Teman Weekdays" />
+            <Stat n="06.00" label="Buka setiap pagi kerja" />
+            <Stat n="100%" label="Halal & homemade" />
+          </div>
         </div>
       </section>
 
       {/* TEAM / STORY BAND */}
-      <section style={{ maxWidth: 1180, margin: "0 auto", padding: "60px 24px" }}>
-        <div
-          className="wd-two"
-          style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 40, alignItems: "center" }}
-        >
-          <div>
-            <h2 style={h2Style}>
-              Teman kantormu <br />
-              <span style={{ fontStyle: "italic", color: C.roast }}>setiap hari kerja.</span>
-            </h2>
-            <p style={pStyle}>
-              Kejar deadline atau butuh jeda sebentar, Weekdays selalu sedia kopi
-              terbaik dan menu yang bikin siang lebih ringan. Lunch vibes bareng
-              teman kantor. Kami siapin makanannya, kamu tinggal menikmati harimu.
-            </p>
+      <section className="wd-section-pad">
+        <div className="wd-container">
+          <div className="wd-two">
+            <div>
+              <h2 style={h2Style}>
+                Teman kantormu <br />
+                <span style={{ fontStyle: "italic", color: C.roast }}>setiap hari kerja.</span>
+              </h2>
+              <p style={pStyle}>
+                Kejar deadline atau butuh jeda sebentar, Weekdays selalu sedia kopi
+                terbaik dan menu yang bikin siang lebih ringan. Lunch vibes bareng
+                teman kantor. Kami siapin makanannya, kamu tinggal menikmati harimu.
+              </p>
+            </div>
+            <Img
+              src={IMG.storyGreenWall}
+              alt="Teman kantor di Weekdays"
+              className="wd-two-img"
+            />
           </div>
-          <Img
-            src={IMG.storyGreenWall}
-            alt="Teman kantor di Weekdays"
-            style={{ width: "100%", height: 340, borderRadius: 18, display: "block" }}
-          />
         </div>
       </section>
 
       {/* FAVORITES */}
-      <section style={{ background: C.latte }}>
-        <div style={{ maxWidth: 1180, margin: "0 auto", padding: "62px 24px" }}>
-          <div style={{ textAlign: "center", marginBottom: 44 }}>
+      <section style={{ background: C.latte }} className="wd-section-pad">
+        <div className="wd-container">
+          <div style={{ textAlign: "center", marginBottom: 38 }}>
             <Eyebrow>Menu Pilihan</Eyebrow>
             <h2 style={{ ...h2Style, textAlign: "center", margin: 0 }}>
               Favorit Teman Weekdays
             </h2>
           </div>
-          <div
-            className="wd-menu-grid"
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(4, 1fr)",
-              gap: 24,
-            }}
-          >
+          <div className="wd-menu-grid">
             {[
               { img: IMG.menuKopiSusu, name: "Kopi Susu Weekdays", note: "Signature, light ke strong" },
               { img: IMG.menuMatcha, name: "Matcha Recharge", note: "Green, creamy, dreamy" },
@@ -463,20 +420,15 @@ function Home({ setPage }) {
                 <Img
                   src={m.img}
                   alt={m.name}
-                  style={{
-                    width: "100%",
-                    height: 210,
-                    borderRadius: 16,
-                    display: "block",
-                    marginBottom: 16,
-                  }}
+                  className="wd-menu-img"
                 />
                 <div
                   style={{
                     fontFamily: "'Fraunces', serif",
-                    fontSize: 19,
+                    fontSize: 17,
                     fontWeight: 500,
                     color: C.espresso,
+                    lineHeight: 1.25,
                   }}
                 >
                   {m.name}
@@ -484,7 +436,7 @@ function Home({ setPage }) {
                 <div
                   style={{
                     fontFamily: "'Inter', sans-serif",
-                    fontSize: 13,
+                    fontSize: 12.5,
                     color: C.muted,
                     marginTop: 4,
                   }}
@@ -498,55 +450,41 @@ function Home({ setPage }) {
       </section>
 
       {/* HALAL / COMMITMENT */}
-      <section style={{ maxWidth: 1180, margin: "0 auto", padding: "62px 24px" }}>
-        <div
-          className="wd-two"
-          style={{ display: "grid", gridTemplateColumns: "0.8fr 1.2fr", gap: 40, alignItems: "center" }}
-        >
-          <Img
-            src={IMG.halalDish}
-            alt="Nasi Goreng Sapi Kebuli Weekdays"
-            style={{ width: "100%", height: 300, borderRadius: 18, display: "block" }}
-          />
-          <div>
-            <h2 style={h2Style}>Sertifikasi Halal</h2>
-            <p style={pStyle}>
-              Kami berkomitmen memberikan pelayanan terbaik untuk teman kantor di
-              mana pun. Seluruh produk Weekdays diproduksi halal dan menjalankan
-              Sistem Jaminan Produk Halal sesuai ketentuan BPJPH dan LPPOM MUI.
-            </p>
-            <div
-              style={{
-                marginTop: 18,
-                fontFamily: "'Inter', sans-serif",
-                fontSize: 13,
-                color: C.espresso,
-                fontWeight: 600,
-              }}
-            >
-              SERTIFIKAT HALAL NO : ID61110024716600725
+      <section className="wd-section-pad">
+        <div className="wd-container">
+          <div className="wd-two">
+            <Img
+              src={IMG.halalDish}
+              alt="Nasi Goreng Sapi Kebuli Weekdays"
+              className="wd-two-img"
+            />
+            <div>
+              <h2 style={h2Style}>Sertifikasi Halal</h2>
+              <p style={pStyle}>
+                Kami berkomitmen memberikan pelayanan terbaik untuk teman kantor di
+                mana pun. Seluruh produk Weekdays diproduksi halal dan menjalankan
+                Sistem Jaminan Produk Halal sesuai ketentuan BPJPH dan LPPOM MUI.
+              </p>
+              <div className="wd-halal-badge">
+                <ShieldCheck size={16} style={{ flexShrink: 0 }} aria-hidden="true" />
+                <span>SERTIFIKAT HALAL NO : ID61110024716600725</span>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
       {/* CTA BAND */}
-      <section style={{ background: C.espresso }}>
-        <div
-          style={{
-            maxWidth: 1180,
-            margin: "0 auto",
-            padding: "70px 24px",
-            textAlign: "center",
-          }}
-        >
+      <section style={{ background: C.espresso }} className="wd-section-pad">
+        <div className="wd-container" style={{ textAlign: "center" }}>
           <h2
             style={{
               fontFamily: "'Fraunces', serif",
               fontWeight: 500,
-              fontSize: "clamp(30px, 4vw, 48px)",
+              fontSize: "clamp(26px, 4vw, 44px)",
               color: C.white,
               margin: "0 0 14px",
+              lineHeight: 1.15,
             }}
           >
             Mari mulai harimu bersama Weekdays
@@ -554,10 +492,11 @@ function Home({ setPage }) {
           <p
             style={{
               fontFamily: "'Inter', sans-serif",
-              fontSize: 16,
-              color: "rgba(255,255,255,0.75)",
+              fontSize: 15.5,
+              color: "rgba(255,255,255,0.78)",
               maxWidth: 500,
               margin: "0 auto 28px",
+              lineHeight: 1.6,
             }}
           >
             Satukan langkah teman kantor dalam ruang yang siap menyapa dan
@@ -586,162 +525,147 @@ function About() {
   ];
   return (
     <>
-      <section style={{ maxWidth: 1180, margin: "0 auto", padding: "56px 24px" }}>
-        <div
-          className="wd-two"
-          style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 44, alignItems: "center" }}
-        >
-          <div>
-            <Eyebrow>Tentang Weekdays</Eyebrow>
-            <h1
-              style={{
-                fontFamily: "'Fraunces', serif",
-                fontWeight: 500,
-                fontSize: "clamp(38px, 5vw, 60px)",
-                lineHeight: 1.05,
-                color: C.bean,
-                margin: "0 0 18px",
-              }}
-            >
-              Ini cerita kami
-            </h1>
-            <p style={pStyle}>
-              Kenalan lebih dekat dengan Weekdays. Cerita, perjalanan, dan
-              orang-orang di balik setiap cangkir, semua bermula dari keinginan
-              menemani teman kantor melewati hari kerja.
-            </p>
+      <section className="wd-section-pad">
+        <div className="wd-container">
+          <div className="wd-two">
+            <div>
+              <Eyebrow>Tentang Weekdays</Eyebrow>
+              <h1
+                style={{
+                  fontFamily: "'Fraunces', serif",
+                  fontWeight: 500,
+                  fontSize: "clamp(34px, 5vw, 56px)",
+                  lineHeight: 1.08,
+                  color: C.bean,
+                  margin: "0 0 18px",
+                }}
+              >
+                Ini cerita kami
+              </h1>
+              <p style={pStyle}>
+                Kenalan lebih dekat dengan Weekdays. Cerita, perjalanan, dan
+                orang-orang di balik setiap cangkir, semua bermula dari keinginan
+                menemani teman kantor melewati hari kerja.
+              </p>
+            </div>
+            <div className="wd-hero-img-wrap">
+              <Img
+                src={IMG.aboutTakeBreak}
+                alt="Menu Weekdays"
+                className="wd-about-img"
+              />
+            </div>
           </div>
-          <Img
-            src={IMG.aboutTakeBreak}
-            alt="Menu Weekdays"
-            style={{ width: "100%", height: 360, borderRadius: 20, display: "block" }}
-          />
-        </div>
-        <div
-          className="wd-stats"
-          style={{ display: "flex", gap: 60, marginTop: 44, flexWrap: "wrap" }}
-        >
-          <Stat n="2" label="Lokasi" />
-          <Stat n="16.7K+" label="Teman Weekdays" />
-          <Stat n="06.00" label="Buka pagi kerja" />
+          <div className="wd-stats-about">
+            <Stat n="2" label="Lokasi" />
+            <Stat n="16.7K+" label="Teman Weekdays" />
+            <Stat n="06.00" label="Buka pagi kerja" />
+          </div>
         </div>
       </section>
 
       {/* MISSION BAND */}
-      <section style={{ background: C.espresso, color: C.white }}>
-        <div style={{ maxWidth: 900, margin: "0 auto", padding: "70px 24px", textAlign: "center" }}>
-          <span
-            style={{ display: "inline-block", width: 34, height: 2, background: C.roast, marginBottom: 22 }}
-          />
-          <h2
-            style={{
-              fontFamily: "'Fraunces', serif",
-              fontWeight: 500,
-              fontSize: "clamp(28px, 3.6vw, 42px)",
-              margin: "0 0 20px",
-            }}
-          >
-            Menemani harimu
-          </h2>
-          <p
-            style={{
-              fontFamily: "'Inter', sans-serif",
-              fontSize: 16.5,
-              lineHeight: 1.7,
-              color: "rgba(255,255,255,0.8)",
-            }}
-          >
-            Lebih dari sekadar rutinitas pagi, Weekdays hadir jadi bagian dari
-            dinamika hidupmu. Menyediakan ketenangan sebelum kesibukan dimulai,
-            hingga menjadi ruang hangat saat berbagi cerita after office bareng
-            teman kantor. Berawal dari niat sederhana ini, kami terus tumbuh dan
-            hadir utuh untuk menemani harimu.
-          </p>
-        </div>
-        <div
-          className="wd-two"
-          style={{
-            maxWidth: 1000,
-            margin: "0 auto",
-            padding: "0 24px 70px",
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: 40,
-            alignItems: "center",
-          }}
-        >
-          <Img
-            src={IMG.aboutCommunity}
-            alt="Healing sejenak bareng #TemanKantor"
-            style={{ width: "100%", height: 320, borderRadius: 18, display: "block" }}
-          />
-          <div>
-            <h3 style={{ fontFamily: "'Fraunces', serif", fontSize: 26, margin: "0 0 8px" }}>
-              Visi
-            </h3>
-            <p style={{ ...pStyle, color: "rgba(255,255,255,0.78)" }}>
-              Menghadirkan kopi dan pengalaman lokal yang dibuat dengan cinta,
-              untuk selalu menemani hari teman kantor di mana pun mereka berada.
-            </p>
-            <h3 style={{ fontFamily: "'Fraunces', serif", fontSize: 26, margin: "22px 0 8px" }}>
-              Misi
-            </h3>
-            <ul
+      <section style={{ background: C.espresso, color: C.white }} className="wd-section-pad">
+        <div className="wd-container">
+          <div style={{ maxWidth: 840, margin: "0 auto", textAlign: "center", marginBottom: 38 }}>
+            <span
+              style={{ display: "inline-block", width: 34, height: 2, background: C.roast, marginBottom: 18 }}
+            />
+            <h2
+              style={{
+                fontFamily: "'Fraunces', serif",
+                fontWeight: 500,
+                fontSize: "clamp(26px, 3.6vw, 40px)",
+                margin: "0 0 16px",
+              }}
+            >
+              Menemani harimu
+            </h2>
+            <p
               style={{
                 fontFamily: "'Inter', sans-serif",
                 fontSize: 15.5,
                 lineHeight: 1.7,
-                color: "rgba(255,255,255,0.78)",
-                paddingLeft: 20,
+                color: "rgba(255,255,255,0.8)",
                 margin: 0,
               }}
             >
-              <li>Menghadirkan kopi dan menu berkualitas untuk setiap jeda kerja.</li>
-              <li>Membangun ruang yang nyaman bagi kolaborasi teman kantor.</li>
-              <li>Terus berinovasi dalam produk dan layanan terbaik.</li>
-            </ul>
+              Lebih dari sekadar rutinitas pagi, Weekdays hadir jadi bagian dari
+              dinamika hidupmu. Menyediakan ketenangan sebelum kesibukan dimulai,
+              hingga menjadi ruang hangat saat berbagi cerita after office bareng
+              teman kantor. Berawal dari niat sederhana ini, kami terus tumbuh dan
+              hadir utuh untuk menemani harimu.
+            </p>
+          </div>
+
+          <div className="wd-two">
+            <div className="wd-hero-img-wrap">
+              <Img
+                src={IMG.aboutCommunity}
+                alt="Healing sejenak bareng #TemanKantor"
+                className="wd-about-img"
+              />
+            </div>
+            <div>
+              <h3 style={{ fontFamily: "'Fraunces', serif", fontSize: 24, margin: "0 0 8px" }}>
+                Visi
+              </h3>
+              <p style={{ ...pStyle, color: "rgba(255,255,255,0.78)" }}>
+                Menghadirkan kopi dan pengalaman lokal yang dibuat dengan cinta,
+                untuk selalu menemani hari teman kantor di mana pun mereka berada.
+              </p>
+              <h3 style={{ fontFamily: "'Fraunces', serif", fontSize: 24, margin: "20px 0 8px" }}>
+                Misi
+              </h3>
+              <ul
+                className="wd-about-list"
+                style={{
+                  fontFamily: "'Inter', sans-serif",
+                  fontSize: 15,
+                  lineHeight: 1.65,
+                  color: "rgba(255,255,255,0.78)",
+                  paddingLeft: 20,
+                  margin: 0,
+                }}
+              >
+                <li style={{ marginBottom: 6 }}>Menghadirkan kopi dan menu berkualitas untuk setiap jeda kerja.</li>
+                <li style={{ marginBottom: 6 }}>Membangun ruang yang nyaman bagi kolaborasi teman kantor.</li>
+                <li>Terus berinovasi dalam produk dan layanan terbaik.</li>
+              </ul>
+            </div>
           </div>
         </div>
       </section>
 
       {/* TIMELINE */}
-      <section style={{ maxWidth: 1180, margin: "0 auto", padding: "70px 24px" }}>
-        <div style={{ textAlign: "center", marginBottom: 40 }}>
-          <Eyebrow>Our Weekdays Journey</Eyebrow>
-          <h2 style={{ ...h2Style, textAlign: "center", margin: 0 }}>
-            Dari satu ide ke <span style={{ fontStyle: "italic", color: C.roast }}>dua kota</span>
-          </h2>
-        </div>
-        <div
-          className="wd-timeline"
-          style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 18 }}
-        >
-          {timeline.map((t) => (
-            <div
-              key={t.year}
-              style={{
-                background: C.latte,
-                borderRadius: 14,
-                padding: "22px 18px",
-                borderTop: `3px solid ${C.roast}`,
-              }}
-            >
-              <div
-                style={{
-                  fontFamily: "'Fraunces', serif",
-                  fontSize: 26,
-                  fontWeight: 600,
-                  color: C.espresso,
-                  marginBottom: 10,
-                }}
-              >
-                {t.year}
+      <section className="wd-section-pad">
+        <div className="wd-container">
+          <div style={{ textAlign: "center", marginBottom: 36 }}>
+            <Eyebrow>Our Weekdays Journey</Eyebrow>
+            <h2 style={{ ...h2Style, textAlign: "center", margin: 0 }}>
+              Dari satu ide ke <span style={{ fontStyle: "italic", color: C.roast }}>dua kota</span>
+            </h2>
+          </div>
+          <div className="wd-timeline">
+            {timeline.map((t) => (
+              <div key={t.year} className="wd-timeline-card">
+                <div
+                  style={{
+                    fontFamily: "'Fraunces', serif",
+                    fontSize: 24,
+                    fontWeight: 600,
+                    color: C.espresso,
+                    marginBottom: 8,
+                  }}
+                >
+                  {t.year}
+                </div>
+                <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 13.5, lineHeight: 1.55, color: C.muted, margin: 0 }}>
+                  {t.txt}
+                </p>
               </div>
-              <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 13.5, lineHeight: 1.55, color: C.muted, margin: 0 }}>
-                {t.txt}
-              </p>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </section>
     </>
@@ -750,6 +674,7 @@ function About() {
 
 /* ============================== OUTLET =================================== */
 function Outlet() {
+  const [lightboxIndex, setLightboxIndex] = useState(null);
   const outlets = [
     {
       name: "Weekdays Menara Bidakara",
@@ -775,96 +700,161 @@ function Outlet() {
     IMG.outletTableShare,
     IMG.storyGreenWall,
   ];
+
+  useEffect(() => {
+    if (lightboxIndex === null) return;
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") setLightboxIndex(null);
+      if (e.key === "ArrowLeft") {
+        setLightboxIndex((prev) => (prev > 0 ? prev - 1 : gallery.length - 1));
+      }
+      if (e.key === "ArrowRight") {
+        setLightboxIndex((prev) => (prev < gallery.length - 1 ? prev + 1 : 0));
+      }
+    };
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.body.style.overflow = prevOverflow;
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [lightboxIndex, gallery.length]);
+
   return (
     <>
-      <section style={{ maxWidth: 1180, margin: "0 auto", padding: "56px 24px 30px", textAlign: "center" }}>
-        <Eyebrow color={C.roast}>Outlet</Eyebrow>
-        <h1
-          style={{
-            fontFamily: "'Fraunces', serif",
-            fontWeight: 500,
-            fontSize: "clamp(34px, 4.6vw, 56px)",
-            color: C.bean,
-            margin: "0 auto 14px",
-            maxWidth: 760,
-            lineHeight: 1.08,
-          }}
-        >
-          Weekdays hadir lebih dekat untukmu, teman kantor
-        </h1>
+      <section className="wd-section-pad" style={{ paddingBottom: 24, textAlign: "center" }}>
+        <div className="wd-container">
+          <Eyebrow color={C.roast}>Outlet</Eyebrow>
+          <h1
+            style={{
+              fontFamily: "'Fraunces', serif",
+              fontWeight: 500,
+              fontSize: "clamp(30px, 4.4vw, 52px)",
+              color: C.bean,
+              margin: "0 auto 14px",
+              maxWidth: 760,
+              lineHeight: 1.1,
+            }}
+          >
+            Weekdays hadir lebih dekat untukmu, teman kantor
+          </h1>
+        </div>
       </section>
 
       {/* Outlet cards */}
-      <section style={{ maxWidth: 1180, margin: "0 auto", padding: "0 24px 30px" }}>
-        <div className="wd-two" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24 }}>
-          {outlets.map((o) => (
-            <div
-              key={o.name}
-              style={{
-                border: `1px solid ${C.foam}`,
-                borderRadius: 18,
-                padding: 26,
-                background: C.white,
-              }}
-            >
-              <div
-                style={{
-                  display: "inline-block",
-                  fontFamily: "'Inter', sans-serif",
-                  fontSize: 12,
-                  fontWeight: 600,
-                  color: C.roast,
-                  background: C.latte,
-                  padding: "5px 12px",
-                  borderRadius: 999,
-                  marginBottom: 14,
-                }}
-              >
-                {o.tag}
-              </div>
-              <h3 style={{ fontFamily: "'Fraunces', serif", fontSize: 24, color: C.espresso, margin: "0 0 10px" }}>
-                {o.name}
-              </h3>
-              <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 14.5, lineHeight: 1.6, color: C.muted, margin: "0 0 12px" }}>
-                {o.addr}
-              </p>
-              <div style={{ display: "flex", alignItems: "flex-start", gap: 9 }}>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true" style={{ flexShrink: 0, marginTop: 2, color: C.roast }}>
-                  <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.6" />
-                  <path d="M12 7.5V12l3 2" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-                <div style={{ fontFamily: "'Inter', sans-serif", fontSize: 13.5, lineHeight: 1.7, color: C.espresso, fontWeight: 500 }}>
-                  {o.hours.map((h) => (
-                    <div key={h}>{h}</div>
-                  ))}
+      <section style={{ paddingBottom: 24 }}>
+        <div className="wd-container">
+          <div className="wd-outlet-grid">
+            {outlets.map((o) => (
+              <div key={o.name} className="wd-outlet-card">
+                <div className="wd-outlet-card-top">
+                  <div className="wd-outlet-tag">{o.tag}</div>
+                  <h3 className="wd-outlet-title">{o.name}</h3>
+                  <p className="wd-outlet-addr">{o.addr}</p>
+                </div>
+                <div className="wd-outlet-hours">
+                  <Clock size={16} style={{ flexShrink: 0, marginTop: 3, color: C.roast }} aria-hidden="true" />
+                  <div className="wd-outlet-hours-text">
+                    {o.hours.map((h) => (
+                      <div key={h}>{h}</div>
+                    ))}
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* Gallery — 9 photos, uniform grid */}
-      <section style={{ maxWidth: 1180, margin: "0 auto", padding: "34px 24px 70px" }}>
-        <div
-          className="wd-gallery"
-          style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 12 }}
-        >
-          {gallery.map((g, i) => (
-            <Img
-              key={i}
-              src={g}
-              alt={`Suasana outlet Weekdays ${i + 1}`}
-              style={{
-                width: "100%",
-                aspectRatio: "1 / 1",
-                borderRadius: 12,
-                display: "block",
-              }}
-            />
-          ))}
+      {/* Gallery — 9 photos, 3x3 uniform grid */}
+      <section className="wd-section-pad" style={{ paddingTop: 12 }}>
+        <div className="wd-container">
+          <div className="wd-gallery">
+            {gallery.map((g, i) => (
+              <div
+                key={i}
+                className="wd-gallery-item"
+                onClick={() => setLightboxIndex(i)}
+                role="button"
+                tabIndex={0}
+                aria-label={`Lihat foto ${i + 1} ukuran penuh`}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    setLightboxIndex(i);
+                  }
+                }}
+              >
+                <Img
+                  src={g}
+                  alt={`Suasana outlet Weekdays ${i + 1}`}
+                  className="wd-gallery-img"
+                />
+              </div>
+            ))}
+          </div>
         </div>
       </section>
+
+      {/* Fullscreen Lightbox Modal */}
+      {lightboxIndex !== null && (
+        <div
+          className="wd-lightbox-overlay"
+          onClick={() => setLightboxIndex(null)}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Tampilan foto ukuran penuh"
+        >
+          <button
+            className="wd-lightbox-close"
+            onClick={(e) => {
+              e.stopPropagation();
+              setLightboxIndex(null);
+            }}
+            aria-label="Tutup tampilan penuh"
+          >
+            <X size={24} />
+          </button>
+
+          <button
+            className="wd-lightbox-btn wd-lightbox-prev"
+            onClick={(e) => {
+              e.stopPropagation();
+              setLightboxIndex((prev) => (prev > 0 ? prev - 1 : gallery.length - 1));
+            }}
+            aria-label="Foto sebelumnya"
+          >
+            <ChevronLeft size={28} />
+          </button>
+
+          <div
+            className="wd-lightbox-content"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <img
+              src={gallery[lightboxIndex]}
+              alt={`Suasana outlet Weekdays ${lightboxIndex + 1}`}
+              className="wd-lightbox-img"
+            />
+          </div>
+
+          <button
+            className="wd-lightbox-btn wd-lightbox-next"
+            onClick={(e) => {
+              e.stopPropagation();
+              setLightboxIndex((prev) => (prev < gallery.length - 1 ? prev + 1 : 0));
+            }}
+            aria-label="Foto berikutnya"
+          >
+            <ChevronRight size={28} />
+          </button>
+
+          <div className="wd-lightbox-counter">
+            {lightboxIndex + 1} / {gallery.length}
+          </div>
+        </div>
+      )}
     </>
   );
 }
@@ -889,28 +879,28 @@ function Event() {
         <Img
           src={IMG.eventHero}
           alt="Weekdays event"
-          style={{ width: "100%", height: 460, display: "block" }}
+          style={{ width: "100%", height: 400, display: "block" }}
         />
         <div
           style={{
             position: "absolute",
             inset: 0,
-            background: "linear-gradient(180deg, rgba(43,29,18,0.35), rgba(43,29,18,0.7))",
+            background: "linear-gradient(180deg, rgba(43,29,18,0.4), rgba(43,29,18,0.75))",
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
             textAlign: "center",
-            padding: 24,
+            padding: "20px 18px",
           }}
         >
           <h1
             style={{
               fontFamily: "'Fraunces', serif",
               fontWeight: 600,
-              fontSize: "clamp(40px, 6vw, 74px)",
+              fontSize: "clamp(34px, 5.5vw, 68px)",
               color: C.white,
-              margin: "0 0 14px",
+              margin: "0 0 12px",
               letterSpacing: "0.02em",
             }}
           >
@@ -919,10 +909,11 @@ function Event() {
           <p
             style={{
               fontFamily: "'Inter', sans-serif",
-              fontSize: 16,
-              color: "rgba(255,255,255,0.85)",
+              fontSize: 15.5,
+              color: "rgba(255,255,255,0.88)",
               maxWidth: 540,
               lineHeight: 1.6,
+              margin: 0,
             }}
           >
             Teman setia yang siap melengkapi setiap event kantor dengan aroma dan
@@ -932,131 +923,127 @@ function Event() {
       </section>
 
       {/* PACKAGES */}
-      <section style={{ maxWidth: 1180, margin: "0 auto", padding: "64px 24px" }}>
-        <div style={{ textAlign: "center", marginBottom: 44 }}>
-          <Eyebrow>Our Package</Eyebrow>
-          <h2 style={{ ...h2Style, textAlign: "center", margin: 0 }}>Pilih paketmu</h2>
-          <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 14.5, color: C.muted, marginTop: 12 }}>
-            Setiap event dapat menampung hingga 80 cups.
-          </p>
-        </div>
-        <div className="wd-three" style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 24 }}>
-          {packages.map((p) => (
+      <section className="wd-section-pad">
+        <div className="wd-container">
+          <div style={{ textAlign: "center", marginBottom: 38 }}>
+            <Eyebrow>Our Package</Eyebrow>
+            <h2 style={{ ...h2Style, textAlign: "center", margin: 0 }}>Pilih paketmu</h2>
+            <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 14, color: C.muted, marginTop: 10 }}>
+              Setiap event dapat menampung hingga 80 cups.
+            </p>
+          </div>
+          <div className="wd-three">
+            {packages.map((p) => (
+              <div
+                key={p.name}
+                className="wd-package-card"
+                style={{
+                  background: C.latte,
+                  borderRadius: 18,
+                  padding: 24,
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 10,
+                }}
+              >
+                <h3 style={{ fontFamily: "'Fraunces', serif", fontSize: 22, color: C.espresso, margin: 0 }}>
+                  {p.name}
+                </h3>
+                <div className="wd-package-cap" style={{ display: "flex", alignItems: "baseline", gap: 6 }}>
+                  <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 13.5, color: C.muted }}>
+                    Kapasitas
+                  </span>
+                  <span style={{ fontFamily: "'Fraunces', serif", fontSize: 36, fontWeight: 600, color: C.roast }}>
+                    {p.price}
+                  </span>
+                  <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 13.5, color: C.muted }}>
+                    {p.unit}
+                  </span>
+                </div>
+                <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 13.5, lineHeight: 1.55, color: C.muted, margin: 0 }}>
+                  {p.note}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          <div style={{ textAlign: "center", marginTop: 44 }}>
+            <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 14.5, color: C.muted, margin: "0 0 6px" }}>
+              Kami menyediakan berbagai pilihan menu untuk
+            </p>
             <div
-              key={p.name}
               style={{
-                background: C.latte,
-                borderRadius: 18,
-                padding: 28,
-                display: "flex",
-                flexDirection: "column",
-                gap: 12,
+                fontFamily: "'Fraunces', serif",
+                fontSize: "clamp(24px, 3.4vw, 38px)",
+                fontWeight: 600,
+                color: C.espresso,
               }}
             >
-              <h3 style={{ fontFamily: "'Fraunces', serif", fontSize: 24, color: C.espresso, margin: 0 }}>
-                {p.name}
-              </h3>
-              <div style={{ display: "flex", alignItems: "baseline", gap: 6 }}>
-                <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 14, color: C.muted }}>
-                  Kapasitas
-                </span>
-                <span style={{ fontFamily: "'Fraunces', serif", fontSize: 40, fontWeight: 600, color: C.roast }}>
-                  {p.price}
-                </span>
-                <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 14, color: C.muted }}>
-                  {p.unit}
-                </span>
-              </div>
-              <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 14, lineHeight: 1.55, color: C.muted, margin: 0 }}>
-                {p.note}
-              </p>
+              #TemaniHariBahagiamu
             </div>
-          ))}
-        </div>
-
-        <div style={{ textAlign: "center", marginTop: 50 }}>
-          <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 15, color: C.muted, margin: "0 0 6px" }}>
-            Kami menyediakan berbagai pilihan menu untuk
-          </p>
-          <div
-            style={{
-              fontFamily: "'Fraunces', serif",
-              fontSize: "clamp(26px, 3.4vw, 40px)",
-              fontWeight: 600,
-              color: C.espresso,
-            }}
-          >
-            #TemaniHariBahagiamu
           </div>
-        </div>
 
-        <div className="wd-menu-grid" style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 22, marginTop: 40 }}>
-          {menu.map((m) => (
-            <div key={m.name} style={{ textAlign: "center" }}>
-              <Img
-                src={m.img}
-                alt={m.name}
-                style={{ width: "100%", height: 190, borderRadius: 16, display: "block", marginBottom: 14 }}
-              />
-              <div style={{ fontFamily: "'Fraunces', serif", fontSize: 18, color: C.espresso }}>{m.name}</div>
-              <div style={{ fontFamily: "'Inter', sans-serif", fontSize: 13, color: C.muted, marginTop: 3 }}>{m.note}</div>
-            </div>
-          ))}
+          <div className="wd-menu-grid" style={{ marginTop: 32 }}>
+            {menu.map((m) => (
+              <div key={m.name} style={{ textAlign: "center" }}>
+                <Img
+                  src={m.img}
+                  alt={m.name}
+                  className="wd-menu-img"
+                />
+                <div style={{ fontFamily: "'Fraunces', serif", fontSize: 16.5, color: C.espresso }}>{m.name}</div>
+                <div style={{ fontFamily: "'Inter', sans-serif", fontSize: 12.5, color: C.muted, marginTop: 3 }}>{m.note}</div>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
       {/* CONTACT */}
-      <section style={{ background: C.latte }}>
-        <div
-          className="wd-two"
-          style={{ maxWidth: 1180, margin: "0 auto", padding: "62px 24px", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 40, alignItems: "center" }}
-        >
-          <div>
-            <h2 style={h2Style}>Hubungi kami untuk event & kolaborasi</h2>
-            <p style={pStyle}>
-              Mari bersama menciptakan pengalaman tak terlupakan untuk teman
-              kantormu. After office, gathering, atau perayaan tim, Weekdays siap
-              menemani.
-            </p>
-            <div style={{ display: "flex", flexDirection: "column", gap: 12, marginTop: 22 }}>
-              <a
-                href="https://www.instagram.com/weekdayscoffee.id/"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={eventContactLink}
-              >
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                  <rect x="2.5" y="2.5" width="19" height="19" rx="5" stroke="currentColor" strokeWidth="1.6" />
-                  <circle cx="12" cy="12" r="4.2" stroke="currentColor" strokeWidth="1.6" />
-                  <circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" />
-                </svg>
-                @weekdayscoffee.id
-              </a>
-              <a href="mailto:marketing@weekdayscoffee.id" style={eventContactLink}>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                  <rect x="3" y="5" width="18" height="14" rx="2.5" stroke="currentColor" strokeWidth="1.6" />
-                  <path d="M4 7l8 6 8-6" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-                marketing@weekdayscoffee.id
-              </a>
-              <a
-                href="https://weekdayscoffee.id"
-                onClick={(e) => e.preventDefault()}
-                style={eventContactLink}
-              >
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                  <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.6" />
-                  <path d="M3 12h18M12 3c2.5 2.5 3.8 5.7 3.8 9s-1.3 6.5-3.8 9c-2.5-2.5-3.8-5.7-3.8-9S9.5 5.5 12 3z" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" />
-                </svg>
-                weekdayscoffee.id
-              </a>
+      <section style={{ background: C.latte }} className="wd-section-pad">
+        <div className="wd-container">
+          <div className="wd-two">
+            <div>
+              <h2 style={h2Style}>Hubungi kami untuk event & kolaborasi</h2>
+              <p style={pStyle}>
+                Mari bersama menciptakan pengalaman tak terlupakan untuk teman
+                kantormu. After office, gathering, atau perayaan tim, Weekdays siap
+                menemani.
+              </p>
+              <div className="wd-event-contacts" style={{ display: "flex", flexDirection: "column", gap: 10, marginTop: 20 }}>
+                <a
+                  href="https://www.instagram.com/weekdayscoffee.id/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={eventContactLink}
+                >
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                    <circle cx="12" cy="12" r="4" />
+                    <circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none" />
+                  </svg>
+                  @weekdayscoffee.id
+                </a>
+                <a href="mailto:marketing@weekdayscoffee.id" style={eventContactLink}>
+                  <Mail size={18} aria-hidden="true" />
+                  marketing@weekdayscoffee.id
+                </a>
+                <a
+                  href="https://weekdayscoffee.id"
+                  onClick={(e) => e.preventDefault()}
+                  style={eventContactLink}
+                >
+                  <Globe size={18} aria-hidden="true" />
+                  weekdayscoffee.id
+                </a>
+              </div>
             </div>
+            <Img
+              src={IMG.eventContact}
+              alt="Weekdays event catering"
+              className="wd-two-img"
+            />
           </div>
-          <Img
-            src={IMG.eventContact}
-            alt="Weekdays event catering"
-            style={{ width: "100%", height: 320, borderRadius: 18, display: "block" }}
-          />
         </div>
       </section>
     </>
@@ -1067,145 +1054,114 @@ function Event() {
 function Footer({ setPage }) {
   return (
     <footer style={{ background: C.espresso, color: C.white }}>
-      <div
-        className="wd-footer"
-        style={{
-          maxWidth: 1180,
-          margin: "0 auto",
-          padding: "56px 24px 30px",
-          display: "grid",
-          gridTemplateColumns: "1.5fr 1fr 1.4fr",
-          gap: 40,
-        }}
-      >
-        <div>
-          <Wordmark color={C.white} />
-          <p
-            style={{
-              fontFamily: "'Inter', sans-serif",
-              fontSize: 14,
-              lineHeight: 1.6,
-              color: "rgba(255,255,255,0.72)",
-              marginTop: 16,
-              maxWidth: 300,
-            }}
-          >
-            Kopi, food, dan kolaborasi untuk teman kantor. Find your little pause,
-            di mana pun kamu berada.
-          </p>
-          <div style={{ display: "flex", gap: 12, marginTop: 20 }}>
-            <a
-              href="https://www.instagram.com/weekdayscoffee.id/"
-              target="_blank"
-              rel="noopener noreferrer"
+      <div className="wd-container">
+        <div className="wd-footer">
+          <div className="wd-footer-col">
+            <div className="wd-footer-brand">
+              <Wordmark color={C.white} />
+            </div>
+            <p
+              className="wd-footer-desc"
               style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: 8,
-                textDecoration: "none",
                 fontFamily: "'Inter', sans-serif",
-                fontSize: 13.5,
-                fontWeight: 500,
-                color: "rgba(255,255,255,0.82)",
-                border: "1px solid rgba(255,255,255,0.22)",
-                borderRadius: 999,
-                padding: "8px 16px",
+                fontSize: 14,
+                lineHeight: 1.6,
+                color: "rgba(255,255,255,0.72)",
+                marginTop: 14,
+                maxWidth: 320,
               }}
             >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <rect x="2.5" y="2.5" width="19" height="19" rx="5" stroke="currentColor" strokeWidth="1.6" />
-                <circle cx="12" cy="12" r="4.2" stroke="currentColor" strokeWidth="1.6" />
-                <circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" />
-              </svg>
-              @weekdayscoffee.id
-            </a>
-          </div>
-        </div>
-
-        <div>
-          <div style={footHead}>Halaman</div>
-          {PAGES.map((p) => (
-            <button
-              key={p.id}
-              onClick={() => setPage(p.id)}
-              style={footLink}
-            >
-              {p.label}
-            </button>
-          ))}
-        </div>
-
-        <div>
-          <div style={footHead}>Hubungi Kami</div>
-          <div style={footContactRow}>
-            <span style={footIcon} aria-hidden="true">
-              <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-                <path d="M12 21c4.5-4 7-7.3 7-11a7 7 0 10-14 0c0 3.7 2.5 7 7 11z" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" />
-                <circle cx="12" cy="10" r="2.4" stroke="currentColor" strokeWidth="1.6" />
-              </svg>
-            </span>
-            <div>
-              <p style={footText}>Menara Bidakara, Jakarta Selatan</p>
-              <p style={footText}>Husein Sastranegara, Bandung</p>
+              Kopi, food, dan kolaborasi untuk teman kantor. Find your little pause,
+              di mana pun kamu berada.
+            </p>
+            <div className="wd-footer-social" style={{ display: "flex", gap: 12, marginTop: 18 }}>
+              <a
+                href="https://www.instagram.com/weekdayscoffee.id/"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 8,
+                  textDecoration: "none",
+                  fontFamily: "'Inter', sans-serif",
+                  fontSize: 13,
+                  fontWeight: 500,
+                  color: "rgba(255,255,255,0.85)",
+                  border: "1px solid rgba(255,255,255,0.24)",
+                  borderRadius: 999,
+                  padding: "7px 15px",
+                }}
+              >
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <rect x="2.5" y="2.5" width="19" height="19" rx="5" stroke="currentColor" strokeWidth="1.6" />
+                  <circle cx="12" cy="12" r="4.2" stroke="currentColor" strokeWidth="1.6" />
+                  <circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" />
+                </svg>
+                @weekdayscoffee.id
+              </a>
             </div>
           </div>
-          <div style={footContactRow}>
-            <span style={footIcon} aria-hidden="true">
-              <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-                <rect x="3" y="5" width="18" height="14" rx="2.5" stroke="currentColor" strokeWidth="1.6" />
-                <path d="M4 7l8 6 8-6" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </span>
-            <p style={footText}>marketing@weekdayscoffee.id</p>
+
+          <div className="wd-footer-col">
+            <div className="wd-foot-head" style={footHead}>Halaman</div>
+            {PAGES.map((p) => (
+              <button
+                key={p.id}
+                onClick={() => setPage(p.id)}
+                className="wd-foot-link"
+                style={footLink}
+              >
+                {p.label}
+              </button>
+            ))}
           </div>
-          <div style={footContactRow}>
-            <span style={footIcon} aria-hidden="true">
-              <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-                <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.6" />
-                <path d="M3 12h18M12 3c2.5 2.5 3.8 5.7 3.8 9s-1.3 6.5-3.8 9c-2.5-2.5-3.8-5.7-3.8-9S9.5 5.5 12 3z" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" />
-              </svg>
-            </span>
-            <p style={footText}>weekdayscoffee.id</p>
-          </div>
-          <div style={footContactRow}>
-            <span style={footIcon} aria-hidden="true">
-              <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-                <path d="M12 3l7 2.5v5c0 4.6-3 8.2-7 9.5-4-1.3-7-4.9-7-9.5v-5L12 3z" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" />
-                <path d="M9 11.8l2 2 4-4.2" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </span>
-            <div>
-              <p style={{ ...footText, margin: 0 }}>Sertifikasi Halal</p>
-              <p style={{ ...footText, fontWeight: 600, color: "rgba(255,255,255,0.9)", margin: 0 }}>
-                ID61110024716600725
-              </p>
+
+          <div className="wd-footer-col">
+            <div className="wd-foot-head" style={footHead}>Hubungi Kami</div>
+            <div className="wd-foot-contact-row" style={footContactRow}>
+              <MapPin size={17} style={footIcon} aria-hidden="true" />
+              <div>
+                <p style={footText}>Menara Bidakara, Jakarta Selatan</p>
+                <p style={{ ...footText, margin: 0 }}>Husein Sastranegara, Bandung</p>
+              </div>
+            </div>
+            <div className="wd-foot-contact-row" style={footContactRow}>
+              <Mail size={17} style={footIcon} aria-hidden="true" />
+              <p style={{ ...footText, margin: 0 }}>marketing@weekdayscoffee.id</p>
+            </div>
+            <div className="wd-foot-contact-row" style={footContactRow}>
+              <Globe size={17} style={footIcon} aria-hidden="true" />
+              <p style={{ ...footText, margin: 0 }}>weekdayscoffee.id</p>
+            </div>
+            <div className="wd-foot-contact-row" style={footContactRow}>
+              <ShieldCheck size={17} style={footIcon} aria-hidden="true" />
+              <div>
+                <p style={{ ...footText, margin: 0 }}>Sertifikasi Halal</p>
+                <p style={{ ...footText, fontWeight: 600, color: "rgba(255,255,255,0.9)", margin: 0 }}>
+                  ID61110024716600725
+                </p>
+              </div>
             </div>
           </div>
         </div>
       </div>
+
       <div
         style={{
           borderTop: "1px solid rgba(255,255,255,0.14)",
-          padding: "18px 24px",
+          padding: "16px 0",
         }}
       >
-        <div
-          style={{
-            maxWidth: 1180,
-            margin: "0 auto",
-            display: "flex",
-            justifyContent: "space-between",
-            flexWrap: "wrap",
-            gap: 8,
-            fontFamily: "'Inter', sans-serif",
-            fontSize: 13,
-            color: "rgba(255,255,255,0.6)",
-          }}
-        >
-          <span style={{ fontFamily: "'Fraunces', serif", fontStyle: "italic" }}>
-            Menemani harimu.
-          </span>
-          <span>© Copyright 2026. All Rights Reserved.</span>
+        <div className="wd-container">
+          <div className="wd-footer-bottom">
+            <span style={{ fontFamily: "'Fraunces', serif", fontStyle: "italic", fontSize: 13, color: "rgba(255,255,255,0.7)" }}>
+              Menemani harimu.
+            </span>
+            <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 12.5, color: "rgba(255,255,255,0.6)" }}>
+              © Copyright 2026. All Rights Reserved.
+            </span>
+          </div>
         </div>
       </div>
     </footer>
@@ -1216,39 +1172,41 @@ function Footer({ setPage }) {
 const h2Style = {
   fontFamily: "'Fraunces', serif",
   fontWeight: 500,
-  fontSize: "clamp(28px, 3.6vw, 42px)",
-  lineHeight: 1.1,
+  fontSize: "clamp(26px, 3.6vw, 42px)",
+  lineHeight: 1.15,
   color: C.bean,
   margin: "0 0 16px",
 };
 const pStyle = {
   fontFamily: "'Inter', sans-serif",
-  fontSize: 16,
+  fontSize: 15.5,
   lineHeight: 1.65,
   color: C.muted,
   margin: 0,
 };
 const btnPrimary = {
   fontFamily: "'Inter', sans-serif",
-  fontSize: 15,
+  fontSize: 14.5,
   fontWeight: 600,
   color: C.white,
   background: C.espresso,
   border: "none",
-  padding: "14px 26px",
+  padding: "13px 24px",
   borderRadius: 999,
   cursor: "pointer",
+  transition: "transform 0.15s ease, background 0.15s ease",
 };
 const btnGhost = {
   fontFamily: "'Inter', sans-serif",
-  fontSize: 15,
+  fontSize: 14.5,
   fontWeight: 600,
   color: C.espresso,
   background: "transparent",
   border: `1.5px solid ${C.foam}`,
-  padding: "14px 26px",
+  padding: "13px 24px",
   borderRadius: 999,
   cursor: "pointer",
+  transition: "transform 0.15s ease, border-color 0.15s ease",
 };
 const eventContactLink = {
   display: "inline-flex",
@@ -1273,11 +1231,12 @@ const footLink = {
   background: "none",
   border: "none",
   textAlign: "left",
-  padding: "6px 0",
+  padding: "8px 0",
   cursor: "pointer",
   fontFamily: "'Inter', sans-serif",
   fontSize: 14,
   color: "rgba(255,255,255,0.72)",
+  transition: "color 0.15s ease",
 };
 const footContactRow = {
   display: "flex",
@@ -1287,55 +1246,23 @@ const footContactRow = {
 };
 const footIcon = {
   flexShrink: 0,
-  color: C.roast,
-  marginTop: 1,
+  color: "#FFFFFF",
+  marginTop: 2,
 };
 const footText = {
   fontFamily: "'Inter', sans-serif",
   fontSize: 13.5,
   lineHeight: 1.6,
   color: "rgba(255,255,255,0.72)",
-  margin: "0 0 8px",
+  margin: "0 0 6px",
 };
 
 /* ============================== APP ===================================== */
 export default function App() {
   const [page, setPage] = useState("home");
 
-  // Load fonts + responsive CSS once.
   useEffect(() => {
-    if (!document.getElementById("wd-fonts")) {
-      const l = document.createElement("link");
-      l.id = "wd-fonts";
-      l.rel = "stylesheet";
-      l.href = FONT_LINK;
-      document.head.appendChild(l);
-    }
-    if (!document.getElementById("wd-css")) {
-      const s = document.createElement("style");
-      s.id = "wd-css";
-      s.textContent = `
-        * { box-sizing: border-box; }
-        body { margin: 0; }
-        button:focus-visible, a:focus-visible { outline: 2px solid ${C.roast}; outline-offset: 3px; }
-        @media (max-width: 860px) {
-          .wd-desktop-nav { display: none !important; }
-          .wd-burger { display: block !important; }
-          .wd-mobile-menu { display: flex !important; }
-          .wd-hero, .wd-two, .wd-footer { grid-template-columns: 1fr !important; }
-          .wd-menu-grid { grid-template-columns: repeat(2, 1fr) !important; }
-          .wd-three { grid-template-columns: 1fr !important; }
-          .wd-timeline { grid-template-columns: repeat(2, 1fr) !important; }
-          .wd-gallery { grid-template-columns: repeat(2, 1fr) !important; }
-          .wd-stats { justify-content: flex-start !important; gap: 28px !important; }
-        }
-        @media (prefers-reduced-motion: reduce) {
-          * { transition: none !important; animation: none !important; }
-        }
-      `;
-      document.head.appendChild(s);
-    }
-    window.scrollTo(0, 0);
+    window.scrollTo({ top: 0, behavior: "instant" });
   }, [page]);
 
   return (
