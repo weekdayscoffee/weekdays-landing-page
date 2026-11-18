@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Menu,
   X,
@@ -195,7 +195,8 @@ function Nav({ page, setPage }) {
           ))}
           <a
             href="https://weekdayscoffee.id"
-            onClick={(e) => e.preventDefault()}
+            target="_blank"
+            rel="noopener noreferrer"
             style={{
               fontFamily: "'Inter', sans-serif",
               fontSize: 13,
@@ -238,10 +239,9 @@ function Nav({ page, setPage }) {
           ))}
           <a
             href="https://weekdayscoffee.id"
-            onClick={(e) => {
-              e.preventDefault();
-              setOpen(false);
-            }}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => setOpen(false)}
             className="wd-mobile-cta"
           >
             Pesan Sekarang
@@ -941,19 +941,80 @@ function Outlet() {
   );
 }
 
+/* ---------- Event page data (kept in sync with the plain-HTML version) ---- */
+const UPCOMING_EVENTS = [
+  { img: "/assets/weekdays-03b-matcha-slide2.jpg", day: "05", month: "Des", meta: "Jumat · 16.00–18.00 WIB", title: "Matcha Whisking Class", text: "Belajar whisk matcha sendiri bareng barista Weekdays, lalu bawa pulang racikanmu.", loc: "Weekdays Menara Bidakara" },
+  { img: "/assets/weekdays-07b-healing-temankantor-slide2.jpg", day: "12", month: "Des", meta: "Jumat · 17.30–20.00 WIB", title: "After Office #TemanKantor", text: "Tutup minggu dengan kopi, bites, dan obrolan santai bareng komunitas Weekdays.", loc: "Weekdays Menara Bidakara" },
+  { img: "/assets/weekdays-05-barista-pour.jpg", day: "19", month: "Des", meta: "Jumat · 15.00–17.00 WIB", title: "Year-End Coffee Tasting", text: "Cicipi menu spesial akhir tahun sebelum resmi masuk daftar menu.", loc: "Weekdays Husein Sastranegara" },
+  { img: "/assets/weekdays-06a-steak-slide1.jpg", day: "09", month: "Jan", meta: "Jumat · 12.00–14.00 WIB", title: "Steak Lunch Day", text: "Makan siang spesial NZ Steak Rib Eye dengan harga khusus untuk teman kantor.", loc: "Weekdays Menara Bidakara" },
+  { img: "/assets/weekdays-10b-penne-napolitana-slide2.jpg", day: "16", month: "Jan", meta: "Jumat · 17.00–19.00 WIB", title: "Pasta Night After Office", text: "Penne Napolitana dan kopi favorit untuk menutup minggu kerja.", loc: "Weekdays Menara Bidakara" },
+  { img: "/assets/weekdays-03c-matcha-slide3.jpg", day: "23", month: "Jan", meta: "Jumat · 15.00–17.00 WIB", title: "Matcha Recharge Session", text: "Cicipi varian matcha terbaru dan ngobrol santai soal ritual minum matcha.", loc: "Weekdays Husein Sastranegara" },
+  { img: "/assets/weekdays-11-greenwall-temankantor.jpg", day: "30", month: "Jan", meta: "Jumat · 16.00–18.00 WIB", title: "Photo Walk #TemanKantor", text: "Hunting foto bareng di sudut-sudut favorit Weekdays, hadiah untuk foto terbaik.", loc: "Weekdays Menara Bidakara" },
+];
+
+const PAST_EVENTS = [
+  { img: "/assets/weekdays-08a-iftar-slide1.jpg", title: "Iftar Bersama Teman Kantor", sub: "Ramadan 2026 · Menara Bidakara" },
+  { img: "/assets/weekdays-07a-healing-temankantor-slide1.jpg", title: "Healing Sejenak #TemanKantor", sub: "Community meetup" },
+  { img: "/assets/weekdays-08b-iftar-slide2.jpg", title: "Corporate Gathering", sub: "Coffee stall & bites" },
+  { img: "/assets/weekdays-01-hero-madebettertogether.jpg", title: "Made Better Together", sub: "Brand launch" },
+  { img: "/assets/weekdays-08c-iftar-slide3.jpg", title: "Buka Puasa Keluarga Kantor", sub: "Ramadan 2026 · Menara Bidakara" },
+  { img: "/assets/weekdays-09a-nasigoreng-kebuli-slide1.jpg", title: "Launching Nasi Goreng Kebuli", sub: "Menu launch · 2025" },
+  { img: "/assets/weekdays-06b-steak-slide2.jpg", title: "Steak Day on the Patio", sub: "Lunch event · 2025" },
+  { img: "/assets/weekdays-03a-matcha-slide1.jpg", title: "Matcha Tasting Session", sub: "Workshop · 2025" },
+  { img: "/assets/weekdays-02-take-a-break.jpg", title: "Take a Break Week", sub: "Promo week · 2024" },
+  { img: "/assets/weekdays-11-greenwall-temankantor.jpg", title: "Grand Opening Green Wall", sub: "Menara Bidakara · 2021" },
+];
+
+const CLIENTS = [
+  { logo: "/assets/logos/btn.svg", name: "BTN" },
+  { logo: "/assets/logos/bidakara.svg", name: "Bidakara" },
+  { logo: "/assets/logos/emina.svg", name: "Emina" },
+  { logo: "/assets/logos/gembira-parenting.svg", name: "Gembira Parenting" },
+  { logo: "/assets/logos/titik-dua-bertemu.svg", name: "Titik Dua Bertemu" },
+  { logo: "/assets/logos/sunday-school-athletes.svg", name: "Sunday School Athletes" },
+  { logo: "/assets/logos/jakarta-yoga-community.svg", name: "Jakarta Yoga Community" },
+];
+
+/* Horizontal scroll rail with prev/next arrows (arrows hidden on mobile via CSS) */
+function Rail({ className = "", label, children }) {
+  const ref = useRef(null);
+  const [edge, setEdge] = useState({ start: true, end: false });
+
+  const update = () => {
+    const el = ref.current;
+    if (!el) return;
+    setEdge({
+      start: el.scrollLeft <= 4,
+      end: el.scrollLeft + el.clientWidth >= el.scrollWidth - 4,
+    });
+  };
+
+  useEffect(() => {
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, []);
+
+  const step = (dir) =>
+    ref.current.scrollBy({ left: dir * ref.current.clientWidth * 0.9, behavior: "smooth" });
+
+  return (
+    <div className="wd-rail-wrap">
+      <button className="wd-rail-btn wd-rail-prev" onClick={() => step(-1)} disabled={edge.start} aria-label="Geser ke kiri">
+        <ChevronLeft size={20} />
+      </button>
+      <button className="wd-rail-btn wd-rail-next" onClick={() => step(1)} disabled={edge.end} aria-label="Geser ke kanan">
+        <ChevronRight size={20} />
+      </button>
+      <div className={`wd-rail ${className}`} ref={ref} onScroll={update} aria-label={label} tabIndex={0}>
+        {children}
+      </div>
+    </div>
+  );
+}
+
 /* ============================== EVENT ==================================== */
 function Event() {
-  const packages = [
-    { name: "Full Package", price: "80", unit: "cups", note: "Layanan lengkap dengan branding staff & properti untuk perayaan kantor." },
-    { name: "Weekdays-IN Bucket", price: "50", unit: "cups", note: "Bucket praktis melengkapi setiap kebersamaan teman kantor." },
-    { name: "Compact Package", price: "30", unit: "cups", note: "Paket ringkas, pas untuk gathering kecil dan after office." },
-  ];
-  const menu = [
-    { img: IMG.menuKopiSusu, name: "Cup (8oz)", note: "Kopi Susu" },
-    { img: IMG.outletWorkday, name: "Kopi Susu (14oz)", note: "Light ke strong" },
-    { img: IMG.menuMatcha, name: "Matcha Series (14oz)", note: "Green & creamy" },
-    { img: IMG.eventBites, name: "Bites & Meals", note: "Good food, good company" },
-  ];
   return (
     <>
       {/* HERO */}
@@ -1004,78 +1065,81 @@ function Event() {
         </div>
       </section>
 
-      {/* PACKAGES */}
+      {/* UPCOMING EVENTS */}
       <section className="wd-section-pad">
         <div className="wd-container">
           <div style={{ textAlign: "center", marginBottom: 38 }}>
-            <Eyebrow>Our Package</Eyebrow>
-            <h2 style={{ ...h2Style, textAlign: "center", margin: 0 }}>Pilih paketmu</h2>
+            <Eyebrow>Upcoming</Eyebrow>
+            <h2 style={{ ...h2Style, textAlign: "center", margin: 0 }}>Event yang akan datang</h2>
             <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 14, color: C.muted, marginTop: 10 }}>
-              Setiap event dapat menampung hingga 80 cups.
+              Catat tanggalnya dan ajak teman kantormu.
             </p>
           </div>
-          <div className="wd-three">
-            {packages.map((p) => (
-              <div
-                key={p.name}
-                className="wd-package-card"
-                style={{
-                  background: C.latte,
-                  borderRadius: 18,
-                  padding: 24,
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: 10,
-                }}
-              >
-                <h3 style={{ fontFamily: "'Fraunces', serif", fontSize: 22, color: C.espresso, margin: 0 }}>
-                  {p.name}
-                </h3>
-                <div className="wd-package-cap" style={{ display: "flex", alignItems: "baseline", gap: 6 }}>
-                  <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 13.5, color: C.muted }}>
-                    Kapasitas
-                  </span>
-                  <span style={{ fontFamily: "'Fraunces', serif", fontSize: 36, fontWeight: 600, color: C.roast }}>
-                    {p.price}
-                  </span>
-                  <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 13.5, color: C.muted }}>
-                    {p.unit}
-                  </span>
+          <Rail className="wd-event-grid" label="Daftar event yang akan datang">
+            {UPCOMING_EVENTS.map((e) => (
+              <article key={e.title} className="wd-event-card">
+                <div className="wd-event-card-img-wrap">
+                  <Img src={e.img} alt={e.title} className="wd-event-card-img" />
+                  <div className="wd-event-date">
+                    <span className="d">{e.day}</span>
+                    <span className="m">{e.month}</span>
+                  </div>
                 </div>
-                <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 13.5, lineHeight: 1.55, color: C.muted, margin: 0 }}>
-                  {p.note}
-                </p>
-              </div>
+                <div className="wd-event-card-body">
+                  <div className="wd-event-meta">{e.meta}</div>
+                  <h3>{e.title}</h3>
+                  <p>{e.text}</p>
+                  <div className="wd-event-loc">
+                    <MapPin size={17} aria-hidden="true" />
+                    {e.loc}
+                  </div>
+                  <a
+                    href="https://www.instagram.com/weekdayscoffee.id/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="wd-btn-sm"
+                    style={btnPrimary}
+                  >
+                    Daftar via Instagram
+                  </a>
+                </div>
+              </article>
             ))}
-          </div>
+          </Rail>
+        </div>
+      </section>
 
-          <div style={{ textAlign: "center", marginTop: 44 }}>
-            <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 14.5, color: C.muted, margin: "0 0 6px" }}>
-              Kami menyediakan berbagai pilihan menu untuk
+      {/* PAST EVENTS */}
+      <section style={{ background: C.latte }} className="wd-section-pad">
+        <div className="wd-container">
+          <div style={{ textAlign: "center", marginBottom: 38 }}>
+            <Eyebrow>Past Events</Eyebrow>
+            <h2 style={{ ...h2Style, textAlign: "center", margin: 0 }}>Event yang telah lalu</h2>
+            <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 14, color: C.muted, marginTop: 10 }}>
+              Momen nyata bareng teman kantor.
             </p>
-            <div
-              style={{
-                fontFamily: "'Fraunces', serif",
-                fontSize: "clamp(24px, 3.4vw, 38px)",
-                fontWeight: 600,
-                color: C.espresso,
-              }}
-            >
-              #TemaniHariBahagiamu
-            </div>
           </div>
+          <Rail className="wd-past-grid" label="Daftar event yang telah lalu">
+            {PAST_EVENTS.map((p) => (
+              <figure key={p.title} className="wd-past-item">
+                <Img src={p.img} alt={p.title} className="wd-past-img" />
+                <figcaption>
+                  <strong>{p.title}</strong>
+                  <span>{p.sub}</span>
+                </figcaption>
+              </figure>
+            ))}
+          </Rail>
+        </div>
+      </section>
 
-          <div className="wd-menu-grid" style={{ marginTop: 32 }}>
-            {menu.map((m) => (
-              <div key={m.name} style={{ textAlign: "center" }}>
-                <Img
-                  src={m.img}
-                  alt={m.name}
-                  className="wd-menu-img"
-                />
-                <div style={{ fontFamily: "'Fraunces', serif", fontSize: 16.5, color: C.espresso }}>{m.name}</div>
-                <div style={{ fontFamily: "'Inter', sans-serif", fontSize: 12.5, color: C.muted, marginTop: 3 }}>{m.note}</div>
-              </div>
+      {/* TRUSTED BY */}
+      <section className="wd-trusted">
+        <div className="wd-container" style={{ textAlign: "center" }}>
+          <p className="wd-trusted-label">Sudah dipercaya oleh</p>
+          <div className="wd-trusted-list">
+            {CLIENTS.map((c) => (
+              <img key={c.name} src={c.logo} alt={c.name} loading="lazy" />
             ))}
           </div>
         </div>
@@ -1112,7 +1176,8 @@ function Event() {
                 </a>
                 <a
                   href="https://weekdayscoffee.id"
-                  onClick={(e) => e.preventDefault()}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   style={eventContactLink}
                 >
                   <Globe size={18} aria-hidden="true" />
