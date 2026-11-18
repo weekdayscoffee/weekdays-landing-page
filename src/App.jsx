@@ -287,82 +287,164 @@ function Stat({ n, label, color = C.espresso }) {
   );
 }
 
+/* ============================== HERO CAROUSEL ============================ */
+const HERO_SLIDES = [
+  {
+    eyebrow: "Coffee • Food • Collaboration",
+    title: ["Made better,", "together."],
+    text: "Kopi yang tepat, menu yang bikin fokus, dan ruang hangat buat teman kantor. Weekdays hadir untuk menemani setiap jeda kecilmu. Find your little pause.",
+    img: IMG.heroMadeTogether,
+    alt: "Suasana Weekdays Coffee",
+    tag: "#TemanKantor",
+    cta: ["Temukan Outlet", "outlet"],
+    cta2: ["Event & Kolaborasi", "event"],
+  },
+  {
+    eyebrow: "Take a Break",
+    title: ["Jeda sejenak,", "ngopi dulu."],
+    text: "Sehari penuh meeting? Sisihkan waktu untuk segelas kopi dan makan siang yang enak. Biar sore tetap semangat.",
+    img: IMG.aboutTakeBreak,
+    alt: "Kopi dan makan siang di Weekdays",
+    tag: "Coffee + Lunch",
+    cta: ["Temukan Outlet", "outlet"],
+    cta2: ["Tentang Kami", "about"],
+  },
+  {
+    eyebrow: "Signature Drinks",
+    title: ["Diseduh dengan", "sepenuh hati."],
+    text: "Dari kopi susu yang creamy sampai matcha yang di-whisk langsung, setiap gelas dibuat untuk menemani harimu.",
+    img: IMG.outletMatchaWhisk,
+    alt: "Matcha di-whisk manual",
+    tag: "Matcha & Kopi",
+    cta: ["Temukan Outlet", "outlet"],
+    cta2: ["Tentang Kami", "about"],
+  },
+  {
+    eyebrow: "Food & Halal",
+    title: ["Makan siang yang", "bikin fokus."],
+    text: "Nasi goreng kebuli, pasta, hingga steak. Menu halal yang mengenyangkan, siap menemani jam istirahatmu.",
+    img: IMG.halalDish,
+    alt: "Nasi Goreng Sapi Kebuli",
+    tag: "100% Halal",
+    cta: ["Temukan Outlet", "outlet"],
+    cta2: ["Tentang Kami", "about"],
+  },
+  {
+    eyebrow: "Event & Kolaborasi",
+    title: ["Ruang buat kumpul,", "kerja, dan kolaborasi."],
+    text: "Dari buka puasa bersama sampai gathering tim. Ayo wujudkan acaramu bareng Weekdays.",
+    img: IMG.eventHero,
+    alt: "Acara bersama Weekdays",
+    tag: "#WeekdaysEvent",
+    cta: ["Event & Kolaborasi", "event"],
+    cta2: ["Temukan Outlet", "outlet"],
+  },
+];
+
+function HeroCarousel({ setPage }) {
+  const [i, setI] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const n = HERO_SLIDES.length;
+  const go = (k) => setI((k + n) % n);
+
+  useEffect(() => {
+    if (paused) return;
+    const t = setTimeout(() => setI((v) => (v + 1) % n), 6000);
+    return () => clearTimeout(t);
+  }, [i, paused, n]);
+
+  const s = HERO_SLIDES[i];
+  return (
+    <section
+      className="wd-hero-section"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+      aria-roledescription="carousel"
+      aria-label="Sorotan Weekdays"
+    >
+      <div className="wd-container">
+       <div className="wd-hero-carousel">
+        <div className="wd-hero wd-hero-slide" key={i} aria-live="polite">
+          <div>
+            <Eyebrow>{s.eyebrow}</Eyebrow>
+            <h1
+              style={{
+                fontFamily: "'Fraunces', serif",
+                fontWeight: 500,
+                fontSize: "clamp(32px, 5.2vw, 68px)",
+                lineHeight: 1.05,
+                color: C.bean,
+                margin: "0 0 20px",
+              }}
+            >
+              {s.title[0]}
+              <br />
+              <span style={{ fontStyle: "italic", color: C.espresso }}>{s.title[1]}</span>
+            </h1>
+            <p style={{ ...pStyle, maxWidth: 440, margin: "0 0 28px" }}>{s.text}</p>
+            <div className="wd-hero-btns">
+              <button onClick={() => setPage(s.cta[1])} style={btnPrimary}>
+                {s.cta[0]}
+              </button>
+              <button onClick={() => setPage(s.cta2[1])} style={btnGhost}>
+                {s.cta2[0]}
+              </button>
+            </div>
+          </div>
+
+          <div className="wd-hero-img-wrap">
+            <Img src={s.img} alt={s.alt} className="wd-hero-img" />
+            <div
+              style={{
+                position: "absolute",
+                bottom: 16,
+                left: 16,
+                background: "rgba(74,46,28,0.92)",
+                color: C.white,
+                padding: "10px 16px",
+                borderRadius: 12,
+                fontFamily: "'Inter', sans-serif",
+                fontSize: 12.5,
+                fontWeight: 600,
+                letterSpacing: "0.04em",
+                boxShadow: "0 4px 12px rgba(0,0,0,0.18)",
+              }}
+            >
+              {s.tag}
+            </div>
+          </div>
+        </div>
+
+        <div className="wd-hero-controls">
+          <button className="wd-hero-arrow wd-hero-arrow-prev" onClick={() => go(i - 1)} aria-label="Slide sebelumnya">
+            <ChevronLeft size={20} />
+          </button>
+          <div className="wd-hero-dots">
+            {HERO_SLIDES.map((_, k) => (
+              <button
+                key={k}
+                className={k === i ? "active" : ""}
+                onClick={() => go(k)}
+                aria-label={`Slide ${k + 1}`}
+              />
+            ))}
+          </div>
+          <button className="wd-hero-arrow wd-hero-arrow-next" onClick={() => go(i + 1)} aria-label="Slide berikutnya">
+            <ChevronRight size={20} />
+          </button>
+        </div>
+       </div>
+      </div>
+    </section>
+  );
+}
+
 /* ============================== HOME ===================================== */
 function Home({ setPage }) {
   return (
     <>
-      {/* HERO: editorial & clean */}
-      <section className="wd-section-pad" style={{ paddingTop: 36, paddingBottom: 24 }}>
-        <div className="wd-container">
-          <div className="wd-hero">
-            <div>
-              <Eyebrow>Coffee • Food • Collaboration</Eyebrow>
-              <h1
-                style={{
-                  fontFamily: "'Fraunces', serif",
-                  fontWeight: 500,
-                  fontSize: "clamp(32px, 5.2vw, 68px)",
-                  lineHeight: 1.05,
-                  color: C.bean,
-                  margin: "0 0 20px",
-                }}
-              >
-                Made better,
-                <br />
-                <span style={{ fontStyle: "italic", color: C.espresso }}>together.</span>
-              </h1>
-              <p
-                style={{
-                  ...pStyle,
-                  maxWidth: 440,
-                  margin: "0 0 28px",
-                }}
-              >
-                Kopi yang tepat, menu yang bikin fokus, dan ruang hangat buat teman
-                kantor. Weekdays hadir untuk menemani setiap jeda kecilmu. Find your
-                little pause.
-              </p>
-              <div className="wd-hero-btns">
-                <button
-                  onClick={() => setPage("outlet")}
-                  style={btnPrimary}
-                >
-                  Temukan Outlet
-                </button>
-                <button onClick={() => setPage("event")} style={btnGhost}>
-                  Event & Kolaborasi
-                </button>
-              </div>
-            </div>
-
-            <div className="wd-hero-img-wrap">
-              <Img
-                src={IMG.heroMadeTogether}
-                alt="Suasana Weekdays Coffee"
-                className="wd-hero-img"
-              />
-              <div
-                style={{
-                  position: "absolute",
-                  bottom: 16,
-                  left: 16,
-                  background: "rgba(74,46,28,0.92)",
-                  color: C.white,
-                  padding: "10px 16px",
-                  borderRadius: 12,
-                  fontFamily: "'Inter', sans-serif",
-                  fontSize: 12.5,
-                  fontWeight: 600,
-                  letterSpacing: "0.04em",
-                  boxShadow: "0 4px 12px rgba(0,0,0,0.18)",
-                }}
-              >
-                #TemanKantor
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* HERO: carousel */}
+      <HeroCarousel setPage={setPage} />
 
       {/* STAT STRIP */}
       <section style={{ padding: "10px 0" }}>

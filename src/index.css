@@ -109,6 +109,91 @@ button:focus-visible, a:focus-visible {
   border-radius: 20px;
 }
 
+.wd-hero-slide {
+  animation: wdHeroFade .6s ease;
+}
+
+@keyframes wdHeroFade {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+
+.wd-hero-section {
+  padding: 36px 24px 4px;
+}
+
+@media (max-width: 860px) {
+  .wd-hero-section { padding: 28px 18px 4px; }
+}
+
+@media (max-width: 540px) {
+  .wd-hero-section { padding: 24px 16px 4px; }
+}
+
+.wd-hero-carousel {
+  position: relative;
+  padding: 0 56px;
+}
+
+.wd-hero-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 14px;
+}
+
+.wd-hero-arrow {
+  background: rgba(255,255,255,0.9);
+  border: none;
+  border-radius: 999px;
+  width: 38px;
+  height: 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #8D4417;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  flex-shrink: 0;
+}
+
+/* Desktop: arrows on the left/right sides of the hero, centred on it */
+@media (min-width: 861px) {
+  .wd-hero-arrow {
+    position: absolute;
+    top: calc(50% - 26px);
+    transform: translateY(-50%);
+  }
+  .wd-hero-arrow-prev { left: 0; }
+  .wd-hero-arrow-next { right: 0; }
+}
+
+@media (max-width: 860px) {
+  .wd-hero-carousel { padding: 0; }
+}
+
+.wd-hero-dots {
+  display: flex;
+  gap: 8px;
+}
+
+.wd-hero-dots button {
+  width: 9px;
+  height: 9px;
+  padding: 0;
+  border: none;
+  border-radius: 999px;
+  background: #EADDCB;
+  cursor: pointer;
+  transition: width .25s, background .25s;
+}
+
+.wd-hero-dots button.active {
+  width: 26px;
+  background: #8D4417;
+}
+
 /* Two Column Section */
 .wd-two {
   display: grid;
