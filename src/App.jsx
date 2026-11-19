@@ -943,26 +943,26 @@ function Outlet() {
 
 /* ---------- Event page data (kept in sync with the plain-HTML version) ---- */
 const UPCOMING_EVENTS = [
-  { img: "/assets/weekdays-03b-matcha-slide2.jpg", day: "05", month: "Des", meta: "Jumat · 16.00–18.00 WIB", title: "Matcha Whisking Class", text: "Belajar whisk matcha sendiri bareng barista Weekdays, lalu bawa pulang racikanmu.", loc: "Weekdays Menara Bidakara" },
-  { img: "/assets/weekdays-07b-healing-temankantor-slide2.jpg", day: "12", month: "Des", meta: "Jumat · 17.30–20.00 WIB", title: "After Office #TemanKantor", text: "Tutup minggu dengan kopi, bites, dan obrolan santai bareng komunitas Weekdays.", loc: "Weekdays Menara Bidakara" },
-  { img: "/assets/weekdays-05-barista-pour.jpg", day: "19", month: "Des", meta: "Jumat · 15.00–17.00 WIB", title: "Year-End Coffee Tasting", text: "Cicipi menu spesial akhir tahun sebelum resmi masuk daftar menu.", loc: "Weekdays Husein Sastranegara" },
-  { img: "/assets/weekdays-06a-steak-slide1.jpg", day: "09", month: "Jan", meta: "Jumat · 12.00–14.00 WIB", title: "Steak Lunch Day", text: "Makan siang spesial NZ Steak Rib Eye dengan harga khusus untuk teman kantor.", loc: "Weekdays Menara Bidakara" },
-  { img: "/assets/weekdays-10b-penne-napolitana-slide2.jpg", day: "16", month: "Jan", meta: "Jumat · 17.00–19.00 WIB", title: "Pasta Night After Office", text: "Penne Napolitana dan kopi favorit untuk menutup minggu kerja.", loc: "Weekdays Menara Bidakara" },
-  { img: "/assets/weekdays-03c-matcha-slide3.jpg", day: "23", month: "Jan", meta: "Jumat · 15.00–17.00 WIB", title: "Matcha Recharge Session", text: "Cicipi varian matcha terbaru dan ngobrol santai soal ritual minum matcha.", loc: "Weekdays Husein Sastranegara" },
-  { img: "/assets/weekdays-11-greenwall-temankantor.jpg", day: "30", month: "Jan", meta: "Jumat · 16.00–18.00 WIB", title: "Photo Walk #TemanKantor", text: "Hunting foto bareng di sudut-sudut favorit Weekdays, hadiah untuk foto terbaik.", loc: "Weekdays Menara Bidakara" },
+  { img: "/assets/weekdays-03b-matcha-slide2.jpg", day: "05", month: "Des", weekday: "Jumat", time: "16.00–18.00 WIB", title: "Matcha Whisking Class", text: "Belajar whisk matcha sendiri bareng barista Weekdays, lalu bawa pulang racikanmu.", loc: "Weekdays Menara Bidakara" },
+  { img: "/assets/weekdays-07b-healing-temankantor-slide2.jpg", day: "12", month: "Des", weekday: "Jumat", time: "17.30–20.00 WIB", title: "After Office #TemanKantor", text: "Tutup minggu dengan kopi, bites, dan obrolan santai bareng komunitas Weekdays.", loc: "Weekdays Menara Bidakara" },
+  { img: "/assets/weekdays-05-barista-pour.jpg", day: "19", month: "Des", weekday: "Jumat", time: "15.00–17.00 WIB", title: "Year-End Coffee Tasting", text: "Cicipi menu spesial akhir tahun sebelum resmi masuk daftar menu.", loc: "Weekdays Husein Sastranegara" },
+  { img: "/assets/weekdays-06a-steak-slide1.jpg", day: "09", month: "Jan", weekday: "Jumat", time: "12.00–14.00 WIB", title: "Steak Lunch Day", text: "Makan siang spesial NZ Steak Rib Eye dengan harga khusus untuk teman kantor.", loc: "Weekdays Menara Bidakara" },
+  { img: "/assets/weekdays-10b-penne-napolitana-slide2.jpg", day: "16", month: "Jan", weekday: "Jumat", time: "17.00–19.00 WIB", title: "Pasta Night After Office", text: "Penne Napolitana dan kopi favorit untuk menutup minggu kerja.", loc: "Weekdays Menara Bidakara" },
+  { img: "/assets/weekdays-03c-matcha-slide3.jpg", day: "23", month: "Jan", weekday: "Jumat", time: "15.00–17.00 WIB", title: "Matcha Recharge Session", text: "Cicipi varian matcha terbaru dan ngobrol santai soal ritual minum matcha.", loc: "Weekdays Husein Sastranegara" },
+  { img: "/assets/weekdays-11-greenwall-temankantor.jpg", day: "30", month: "Jan", weekday: "Jumat", time: "16.00–18.00 WIB", title: "Photo Walk #TemanKantor", text: "Hunting foto bareng di sudut-sudut favorit Weekdays, hadiah untuk foto terbaik.", loc: "Weekdays Menara Bidakara" },
 ];
 
 const PAST_EVENTS = [
-  { img: "/assets/weekdays-08a-iftar-slide1.jpg", title: "Iftar Bersama Teman Kantor", sub: "Ramadan 2026 · Menara Bidakara" },
-  { img: "/assets/weekdays-07a-healing-temankantor-slide1.jpg", title: "Healing Sejenak #TemanKantor", sub: "Community meetup" },
-  { img: "/assets/weekdays-08b-iftar-slide2.jpg", title: "Corporate Gathering", sub: "Coffee stall & bites" },
-  { img: "/assets/weekdays-01-hero-madebettertogether.jpg", title: "Made Better Together", sub: "Brand launch" },
-  { img: "/assets/weekdays-08c-iftar-slide3.jpg", title: "Buka Puasa Keluarga Kantor", sub: "Ramadan 2026 · Menara Bidakara" },
-  { img: "/assets/weekdays-09a-nasigoreng-kebuli-slide1.jpg", title: "Launching Nasi Goreng Kebuli", sub: "Menu launch · 2025" },
-  { img: "/assets/weekdays-06b-steak-slide2.jpg", title: "Steak Day on the Patio", sub: "Lunch event · 2025" },
-  { img: "/assets/weekdays-03a-matcha-slide1.jpg", title: "Matcha Tasting Session", sub: "Workshop · 2025" },
-  { img: "/assets/weekdays-02-take-a-break.jpg", title: "Take a Break Week", sub: "Promo week · 2024" },
-  { img: "/assets/weekdays-11-greenwall-temankantor.jpg", title: "Grand Opening Green Wall", sub: "Menara Bidakara · 2021" },
+  { img: "/assets/weekdays-08a-iftar-slide1.jpg", title: "Iftar Bersama Teman Kantor", place: "Menara Bidakara", year: "2026" },
+  { img: "/assets/weekdays-07a-healing-temankantor-slide1.jpg", title: "Healing Sejenak #TemanKantor", place: "Meetup komunitas", year: "2026" },
+  { img: "/assets/weekdays-08b-iftar-slide2.jpg", title: "Corporate Gathering", place: "Coffee stall dan bites", year: "2026" },
+  { img: "/assets/weekdays-01-hero-madebettertogether.jpg", title: "Made Better Together", place: "Peluncuran brand", year: "2025" },
+  { img: "/assets/weekdays-08c-iftar-slide3.jpg", title: "Buka Puasa Keluarga Kantor", place: "Menara Bidakara", year: "2026" },
+  { img: "/assets/weekdays-09a-nasigoreng-kebuli-slide1.jpg", title: "Launching Nasi Goreng Kebuli", place: "Peluncuran menu", year: "2025" },
+  { img: "/assets/weekdays-06b-steak-slide2.jpg", title: "Steak Day on the Patio", place: "Makan siang bersama", year: "2025" },
+  { img: "/assets/weekdays-03a-matcha-slide1.jpg", title: "Matcha Tasting Session", place: "Workshop", year: "2025" },
+  { img: "/assets/weekdays-02-take-a-break.jpg", title: "Take a Break Week", place: "Pekan promo", year: "2024" },
+  { img: "/assets/weekdays-11-greenwall-temankantor.jpg", title: "Grand Opening Green Wall", place: "Menara Bidakara", year: "2021" },
 ];
 
 const CLIENTS = [
@@ -975,8 +975,9 @@ const CLIENTS = [
   { logo: "/assets/logos/jakarta-yoga-community.svg", name: "Jakarta Yoga Community" },
 ];
 
-/* Horizontal scroll rail with prev/next arrows (arrows hidden on mobile via CSS) */
-function Rail({ className = "", label, children }) {
+/* Section heading + horizontal scroller. Arrows live in the heading row
+   (desktop); on mobile they are hidden and the row is swiped. */
+function Rail({ title, sub, className = "", label, children }) {
   const ref = useRef(null);
   const [edge, setEdge] = useState({ start: true, end: false });
 
@@ -995,20 +996,113 @@ function Rail({ className = "", label, children }) {
     return () => window.removeEventListener("resize", update);
   }, []);
 
-  const step = (dir) =>
-    ref.current.scrollBy({ left: dir * ref.current.clientWidth * 0.9, behavior: "smooth" });
+  const step = (dir) => {
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    ref.current.scrollBy({
+      left: dir * ref.current.clientWidth * 0.8,
+      behavior: reduce ? "auto" : "smooth",
+    });
+  };
 
   return (
-    <div className="wd-rail-wrap">
-      <button className="wd-rail-btn wd-rail-prev" onClick={() => step(-1)} disabled={edge.start} aria-label="Geser ke kiri">
-        <ChevronLeft size={20} />
-      </button>
-      <button className="wd-rail-btn wd-rail-next" onClick={() => step(1)} disabled={edge.end} aria-label="Geser ke kanan">
-        <ChevronRight size={20} />
-      </button>
+    <>
+      <div className="wd-rail-head">
+        <div>
+          <h2 className="wd-rail-title">{title}</h2>
+          <p className="wd-rail-sub">{sub}</p>
+        </div>
+        <div className="wd-rail-controls">
+          <button onClick={() => step(-1)} disabled={edge.start} aria-label="Geser ke kiri">
+            <ChevronLeft size={20} />
+          </button>
+          <button onClick={() => step(1)} disabled={edge.end} aria-label="Geser ke kanan">
+            <ChevronRight size={20} />
+          </button>
+        </div>
+      </div>
       <div className={`wd-rail ${className}`} ref={ref} onScroll={update} aria-label={label} tabIndex={0}>
         {children}
       </div>
+    </>
+  );
+}
+
+/* Client logos: scrolls sideways by hand and drifts on its own.
+   The list is rendered twice so the drift can loop without a visible jump. */
+function LogoStrip() {
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const SPEED = 36; // px per second
+    let pos = el.scrollLeft;
+    let paused = false;
+    let last = performance.now();
+    let raf;
+    let resumeTimer;
+
+    const tick = (now) => {
+      const dt = Math.min(now - last, 100);
+      last = now;
+      if (!paused) {
+        const half = el.scrollWidth / 2;
+        pos += (SPEED * dt) / 1000;
+        if (half > 0 && pos >= half) pos -= half;
+        el.scrollLeft = pos;
+      }
+      raf = requestAnimationFrame(tick);
+    };
+
+    const pause = () => {
+      clearTimeout(resumeTimer);
+      paused = true;
+    };
+    const resume = (delay = 0) => {
+      clearTimeout(resumeTimer);
+      resumeTimer = setTimeout(() => {
+        pos = el.scrollLeft;
+        paused = false;
+      }, delay);
+    };
+
+    const onEnter = () => pause();
+    const onLeave = () => resume(0);
+    const onTouchStart = () => pause();
+    const onTouchEnd = () => resume(2500); // let the swipe's momentum finish first
+
+    el.addEventListener("mouseenter", onEnter);
+    el.addEventListener("mouseleave", onLeave);
+    el.addEventListener("touchstart", onTouchStart, { passive: true });
+    el.addEventListener("touchend", onTouchEnd);
+    el.addEventListener("focusin", onEnter);
+    el.addEventListener("focusout", onLeave);
+    raf = requestAnimationFrame(tick);
+
+    return () => {
+      cancelAnimationFrame(raf);
+      clearTimeout(resumeTimer);
+      el.removeEventListener("mouseenter", onEnter);
+      el.removeEventListener("mouseleave", onLeave);
+      el.removeEventListener("touchstart", onTouchStart);
+      el.removeEventListener("touchend", onTouchEnd);
+      el.removeEventListener("focusin", onEnter);
+      el.removeEventListener("focusout", onLeave);
+    };
+  }, []);
+
+  return (
+    <div className="wd-logo-strip" ref={ref} tabIndex={0} aria-label="Daftar klien Weekdays">
+      <ul className="wd-logo-track">
+        {[0, 1].map((copy) =>
+          CLIENTS.map((c) => (
+            <li key={`${copy}-${c.name}`} className="wd-logo-item" aria-hidden={copy === 1 || undefined}>
+              <img src={c.logo} alt={copy === 1 ? "" : c.name} />
+            </li>
+          ))
+        )}
+      </ul>
     </div>
   );
 }
@@ -1066,41 +1160,43 @@ function Event() {
       </section>
 
       {/* UPCOMING EVENTS */}
-      <section className="wd-section-pad">
+      <section className="wd-section-pad wd-events-upcoming">
         <div className="wd-container">
-          <div style={{ textAlign: "center", marginBottom: 38 }}>
-            <Eyebrow>Upcoming</Eyebrow>
-            <h2 style={{ ...h2Style, textAlign: "center", margin: 0 }}>Event yang akan datang</h2>
-            <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 14, color: C.muted, marginTop: 10 }}>
-              Catat tanggalnya dan ajak teman kantormu.
-            </p>
-          </div>
-          <Rail className="wd-event-grid" label="Daftar event yang akan datang">
+          <Rail
+            title="Event yang akan datang"
+            sub="Catat tanggalnya, lalu ajak teman kantormu."
+            className="wd-up-rail"
+            label="Daftar event yang akan datang"
+          >
             {UPCOMING_EVENTS.map((e) => (
-              <article key={e.title} className="wd-event-card">
-                <div className="wd-event-card-img-wrap">
-                  <Img src={e.img} alt={e.title} className="wd-event-card-img" />
-                  <div className="wd-event-date">
+              <article key={e.title} className="wd-up">
+                <div className="wd-up-photo">
+                  <Img src={e.img} alt={e.title} className="wd-up-img" />
+                  <div className="wd-up-date">
                     <span className="d">{e.day}</span>
                     <span className="m">{e.month}</span>
                   </div>
                 </div>
-                <div className="wd-event-card-body">
-                  <div className="wd-event-meta">{e.meta}</div>
+                <div className="wd-up-body">
                   <h3>{e.title}</h3>
                   <p>{e.text}</p>
-                  <div className="wd-event-loc">
-                    <MapPin size={17} aria-hidden="true" />
-                    {e.loc}
-                  </div>
+                  <ul className="wd-up-facts">
+                    <li>
+                      <Clock size={16} aria-hidden="true" />
+                      {e.weekday}, {e.time}
+                    </li>
+                    <li>
+                      <MapPin size={16} aria-hidden="true" />
+                      {e.loc}
+                    </li>
+                  </ul>
                   <a
                     href="https://www.instagram.com/weekdayscoffee.id/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="wd-btn-sm"
-                    style={btnPrimary}
+                    className="wd-up-cta"
                   >
-                    Daftar via Instagram
+                    Daftar lewat Instagram
                   </a>
                 </div>
               </article>
@@ -1109,23 +1205,23 @@ function Event() {
         </div>
       </section>
 
-      {/* PAST EVENTS */}
-      <section style={{ background: C.latte }} className="wd-section-pad">
+      {/* PAST EVENTS: staggered photo strip */}
+      <section style={{ background: C.latte }} className="wd-section-pad wd-events-past">
         <div className="wd-container">
-          <div style={{ textAlign: "center", marginBottom: 38 }}>
-            <Eyebrow>Past Events</Eyebrow>
-            <h2 style={{ ...h2Style, textAlign: "center", margin: 0 }}>Event yang telah lalu</h2>
-            <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 14, color: C.muted, marginTop: 10 }}>
-              Momen nyata bareng teman kantor.
-            </p>
-          </div>
-          <Rail className="wd-past-grid" label="Daftar event yang telah lalu">
+          <Rail
+            title="Event yang telah lalu"
+            sub={`${PAST_EVENTS.length} momen bareng teman kantor sejak 2021.`}
+            className="wd-past-rail"
+            label="Daftar event yang telah lalu"
+          >
             {PAST_EVENTS.map((p) => (
-              <figure key={p.title} className="wd-past-item">
+              <figure key={p.title} className="wd-past">
                 <Img src={p.img} alt={p.title} className="wd-past-img" />
                 <figcaption>
                   <strong>{p.title}</strong>
-                  <span>{p.sub}</span>
+                  <span>
+                    {p.place}, {p.year}
+                  </span>
                 </figcaption>
               </figure>
             ))}
@@ -1133,15 +1229,14 @@ function Event() {
         </div>
       </section>
 
-      {/* TRUSTED BY */}
+      {/* TRUSTED BY: heading, then a logo strip that scrolls sideways */}
       <section className="wd-trusted">
-        <div className="wd-container" style={{ textAlign: "center" }}>
-          <p className="wd-trusted-label">Sudah dipercaya oleh</p>
-          <div className="wd-trusted-list">
-            {CLIENTS.map((c) => (
-              <img key={c.name} src={c.logo} alt={c.name} loading="lazy" />
-            ))}
-          </div>
+        <div className="wd-container wd-trusted-copy">
+          <h2>Sudah dipercaya oleh</h2>
+          <p>Kantor, komunitas, dan brand yang memilih Weekdays untuk acara mereka.</p>
+        </div>
+        <div className="wd-container">
+          <LogoStrip />
         </div>
       </section>
 
